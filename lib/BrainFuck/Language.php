@@ -21,32 +21,24 @@ class Language {
     }
 
     protected function parse(array $program) {
+        // Use a flyweight here
+        $stdOps = array(
+            '+'  => new Op\Plus,
+            '-'  => new Op\Minus,
+            '.'  => new Op\Output,
+            ','  => new Op\Input,
+            '>'  => new Op\MoveRight,
+            '<'  => new Op\MoveLeft,
+        );
         $ops = array();
         $programPos = 0;
-        while(isset($program[$programPos])) {
-            switch ($program[$programPos]) {
-                case '+':
-                    $ops[] = new Op\Plus;
-                    break;
-                case '-':
-                    $ops[] = new Op\Minus;
-                    break;
-                case '.':
-                    $ops[] = new Op\Output;
-                    break;
-                case ',':
-                    $ops[] = new Op\Input;
-                    break;
-                case '>':
-                    $ops[] = new Op\MoveRight;
-                    break;
-                case '<':
-                    $ops[] = new Op\MoveLeft;
-                    break;
-                case '[':
-                    $buffer = $this->parseLoop($program, $programPos);
-                    $ops[] = new Op\Loop($this->parse($buffer));
-                    break;
+        while (isset($program[$programPos])) {
+            $op = $program[$programPos];
+            if (isset($stdOps[$op])) {
+                $ops[] = $stdOps[$op];
+            } elseif ($op == '[') {
+                $buffer = $this->parseLoop($program, $programPos);
+                $ops[] = new Op\Loop($this->parse($buffer));
             }
             $programPos++;
         }
@@ -57,7 +49,7 @@ class Language {
         $openCount = 1;
         $pos = $startPos;
         while (isset($program[++$pos])) {
-            switch($program[$pos]) {
+            switch ($program[$pos]) {
                 case '[':
                     $openCount++;
                     break;
@@ -65,9 +57,7 @@ class Language {
                     $openCount--;
                     if ($openCount == 0) {
                         $buffer = array_slice(
-                                $program,
-                                $startPos + 1,
-                                $pos - $startPos - 1
+                                $program, $startPos + 1, $pos - $startPos - 1
                         );
                         $startPos = $pos;
                         return $buffer;
