@@ -11,6 +11,13 @@ class LanguageTest extends \PHPUnit_Framework_TestCase {
             array(',-.', array(1), array(0)),
             array(',>++<.', array(1), array(1)),
             array(',>,>+.<.<.', array(3, 2), array(1, 2, 3)),
+            array('[+].', array(), array(0)),
+            array(
+                '++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.',
+                array(),
+                // This is ascii code for "Hello World!\n"
+                array(72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100, 33, 10),
+            ),
         );
     }
 
@@ -25,6 +32,14 @@ class LanguageTest extends \PHPUnit_Framework_TestCase {
         $language = new Language;
         $actual = $language->run($program, $input);
         $this->assertEquals($expectedOutput, $actual);
+    }
+
+    /**
+     * @expectedException LogicException
+     */
+    public function testParseError() {
+        $language = new Language;
+        $language->run('[', array());
     }
 
 }
