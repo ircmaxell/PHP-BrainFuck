@@ -2,7 +2,13 @@
 
 namespace BrainFuck\Op;
 
-class Minus implements \BrainFuck\Op {
+class Change implements \BrainFuck\Op {
+
+    protected $amount = 0;
+    
+    public function __construct($amount = 0) {
+        $this->amount = $amount;
+    }
 
     /**
      * @param Memory $memory The active memory for the program
@@ -11,7 +17,7 @@ class Minus implements \BrainFuck\Op {
      * @return array The output of the op (if any)
      */
     public function execute(\BrainFuck\Memory $memory, \BrainFuck\IO $io) {
-        $memory->write($memory->read() - 1);
+        $memory->write($memory->read() + $this->amount);
     }
 
 }

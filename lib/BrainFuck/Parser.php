@@ -4,43 +4,40 @@ namespace BrainFuck;
 
 class Parser {
 
-    protected $noOp;
     protected $stdOps = array();
 
     public function __construct() {
         // Use a flyweight here
         $this->stdOps = array(
-            '+' => new Op\Plus,
-            '-' => new Op\Minus,
+            '+' => new Op\Change(1),
+            '-' => new Op\Change(-1),
             '.' => new Op\Output,
             ',' => new Op\Input,
-            '>' => new Op\MoveRight,
-            '<' => new Op\MoveLeft,
+            '>' => new Op\Move(1),
+            '<' => new Op\Move(-1),
         );
-        $this->noOp = new Op\NoOp;
     }
 
     public function parse($program) {
-        $ops = $this->parseProgram(str_split($program));
-
-        return new Op\Loop($this->filterNoOps($ops));
+        $ops = $this->parseProgram($program);
+        return new Op\Loop($ops);
     }
 
     protected function filterNoOps(array $ops) {
-        return array_filter($ops, function($op) { return !$op instanceof Op\NoOp; });
+        return array_filter($ops, function($op) { return (bool) $op; });
     }
 
-    protected function parseProgram(array $program) {
+    protected function parseProgram($program) {
         $ops = array();
         $programPos = 0;
         while (isset($program[$programPos])) {
             $ops[] = $this->getOp($program, $programPos);
             $programPos++;
         }
-        return $ops;
+        return $this->filterNoOps($ops);
     }
 
-    protected function getOp(array $program, &$pos) {
+    protected function getOp($program, &$pos) {
         if (isset($this->stdOps[$program[$pos]])) {
             return $this->stdOps[$program[$pos]];
         } elseif ($program[$pos] == ']') {
@@ -48,11 +45,11 @@ class Parser {
         } elseif ($program[$pos] == '[') {
             return $this->parseLoop($program, $pos);
         } else {
-            return $this->noOp;
+            return null;
         }
     }
 
-    protected function parseLoop(array $program, &$pos) {
+    protected function parseLoop($program, &$pos) {
         /**
          * This regex will parse out and match [] braces.
          *
@@ -63,9 +60,8 @@ class Parser {
          * either no match will occur, or the match will not be for that loop.
          */
         $regex = '((\[((?:[^\[\]]+|(?1))*)\]))';
-        $rawProgram = implode('', $program);
         $matches = array();
-        preg_match($regex, $rawProgram, $matches, PREG_OFFSET_CAPTURE, $pos);
+        preg_match($regex, $program, $matches, PREG_OFFSET_CAPTURE, $pos);
         if (!$matches || $matches[0][1] !== $pos) {
             throw new \LogicException('Unmatched Brace at pos ' . $pos);
         }
