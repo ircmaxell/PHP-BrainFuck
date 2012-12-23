@@ -10,8 +10,8 @@ class Input implements \BrainFuck\Op {
      *
      * @return array The output of the op (if any)
      */
-    public function execute(\BrainFuck\Memory $memory, \BrainFuck\Input $input) {
-        $memory->write($input->read());
+    public function execute(\BrainFuck\Memory $memory, \BrainFuck\IO $io) {
+        $memory->write($io->read());
     }
 
 }

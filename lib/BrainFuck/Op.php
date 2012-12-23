@@ -6,10 +6,8 @@ interface Op {
 
     /**
      * @param Memory $memory The active memory for the program
-     * @param Input  $input  The current input for the program
-     *
-     * @return array The output of the op (if any)
+     * @param IO     $io     The IO stack for the program
      */
-    public function execute(\BrainFuck\Memory $memory, \BrainFuck\Input $input);
+    public function execute(\BrainFuck\Memory $memory, \BrainFuck\IO $io);
 
 }

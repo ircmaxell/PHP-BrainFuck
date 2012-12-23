@@ -10,8 +10,8 @@ class Output implements \BrainFuck\Op {
      *
      * @return array The output of the op (if any)
      */
-    public function execute(\BrainFuck\Memory $memory, \BrainFuck\Input $input) {
-        return array($memory->read());
+    public function execute(\BrainFuck\Memory $memory, \BrainFuck\IO $io) {
+        $io->write($memory->read());
     }
 
 }

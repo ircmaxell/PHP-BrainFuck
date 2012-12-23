@@ -10,7 +10,7 @@ class Minus implements \BrainFuck\Op {
      *
      * @return array The output of the op (if any)
      */
-    public function execute(\BrainFuck\Memory $memory, \BrainFuck\Input $input) {
+    public function execute(\BrainFuck\Memory $memory, \BrainFuck\IO $io) {
         $memory->write($memory->read() - 1);
     }
 

@@ -16,17 +16,16 @@ class Loop implements \BrainFuck\Op {
      *
      * @return array The output of the op (if any)
      */
-    public function execute(\BrainFuck\Memory $memory, \BrainFuck\Input $input) {
-        $output = array();
+    public function execute(\BrainFuck\Memory $memory, \BrainFuck\IO $io) {
         while ($memory->read()) {
-            foreach ($this->ops as $op) {
-                $tmp = $op->execute($memory, $input);
-                if ($tmp) {
-                    $output = array_merge($output, $tmp);
-                }
-            }
+            $this->executeProgram($memory, $io);
         }
-        return $output;
+    }
+
+    public function executeProgram(\BrainFuck\Memory $memory, \BrainFuck\IO $io) {
+        foreach ($this->ops as $op) {
+            $op->execute($memory, $io);
+        }
     }
 
 }
