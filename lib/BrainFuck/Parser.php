@@ -2,11 +2,11 @@
 
 namespace BrainFuck;
 
-use Op\Change;
-use Op\Output;
-use Op\Input;
-use Op\Move;
-use Op\Loop;
+use BrainFuck\Op\Change;
+use BrainFuck\Op\Output;
+use BrainFuck\Op\Input;
+use BrainFuck\Op\Move;
+use BrainFuck\Op\Loop;
 use LogicException;
 
 class Parser
