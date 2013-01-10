@@ -2,7 +2,11 @@
 
 namespace BrainFuck\Op;
 
-class Move implements \BrainFuck\Op
+use BrainFuck\Op as Template;
+use BrainFuck\Memory;
+use BrainFuck\IO;
+
+class Move implements Template
 {
     protected $direction = 0;
 
@@ -17,7 +21,7 @@ class Move implements \BrainFuck\Op
      *
      * @return array The output of the op (if any)
      */
-    public function execute(\BrainFuck\Memory $memory, \BrainFuck\IO $io)
+    public function execute(Memory $memory, IO $io)
     {
         $memory->move($this->direction);
     }

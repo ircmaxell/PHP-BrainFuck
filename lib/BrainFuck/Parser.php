@@ -2,6 +2,13 @@
 
 namespace BrainFuck;
 
+use Op\Change;
+use Op\Output;
+use Op\Input;
+use Op\Move;
+use Op\Loop;
+use LogicException;
+
 class Parser
 {
     protected $stdOps = array();
@@ -10,12 +17,12 @@ class Parser
     {
         // Use a flyweight here
         $this->stdOps = array(
-            '+' => new Op\Change(1),
-            '-' => new Op\Change(-1),
-            '.' => new Op\Output,
-            ',' => new Op\Input,
-            '>' => new Op\Move(1),
-            '<' => new Op\Move(-1),
+            '+' => new Change(1),
+            '-' => new Change(-1),
+            '.' => new Output,
+            ',' => new Input,
+            '>' => new Move(1),
+            '<' => new Move(-1),
         );
     }
 
@@ -23,12 +30,14 @@ class Parser
     {
         $ops = $this->parseProgram($program);
 
-        return new Op\Loop($ops);
+        return new Loop($ops);
     }
 
     protected function filterNoOps(array $ops)
     {
-        return array_filter($ops, function($op) { return (bool) $op; });
+        return array_filter($ops, function($op) {
+            return (bool) $op;
+        });
     }
 
     protected function parseProgram($program)
@@ -51,9 +60,9 @@ class Parser
             throw new \LogicException('Unmatch Brace at pos ' . $pos);
         } elseif ($program[$pos] == '[') {
             return $this->parseLoop($program, $pos);
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     protected function parseLoop($program, &$pos)
@@ -71,7 +80,7 @@ class Parser
         $matches = array();
         preg_match($regex, $program, $matches, PREG_OFFSET_CAPTURE, $pos);
         if (!$matches || $matches[0][1] !== $pos) {
-            throw new \LogicException('Unmatched Brace at pos ' . $pos);
+            throw new LogicException('Unmatched Brace at pos ' . $pos);
         }
         $pos += strlen($matches[0][0]) - 1;
 
