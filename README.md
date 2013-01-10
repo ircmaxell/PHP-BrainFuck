@@ -24,7 +24,7 @@ use BrainFuck\Language;
 $Language = new Language;
 
 $output = $Language->run('++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.');
-var_dump($t);
+var_dump($output);
 
 // Output:
 /*
@@ -45,7 +45,7 @@ array (size=13)
 */
 
 $output = $Language->run(',+.', array(5));
-var_dump($t);
+var_dump($output);
 
 // Output:
 /*
