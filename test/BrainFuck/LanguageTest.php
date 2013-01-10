@@ -2,9 +2,10 @@
 
 namespace BrainFuck;
 
-class LanguageTest extends \PHPUnit_Framework_TestCase {
-
-    public static function provideTestProgram() {
+class LanguageTest extends \PHPUnit_Framework_TestCase
+{
+    public static function provideTestProgram()
+    {
         return array(
             array(',+.', array(0), array(1)),
             array(',+.', array(1), array(2)),
@@ -54,14 +55,16 @@ class LanguageTest extends \PHPUnit_Framework_TestCase {
         );
     }
 
-    public function testInstantiation() {
+    public function testInstantiation()
+    {
         $language = new Language();
     }
 
     /**
      * @dataProvider provideTestProgram
      */
-    public function testProgram($program, $input, $expectedOutput) {
+    public function testProgram($program, $input, $expectedOutput)
+    {
         $language = new Language;
         $actual = $language->run($program, $input);
         $this->assertEquals($expectedOutput, $actual);
@@ -70,7 +73,8 @@ class LanguageTest extends \PHPUnit_Framework_TestCase {
     /**
      * @expectedException LogicException
      */
-    public function testParseError() {
+    public function testParseError()
+    {
         $language = new Language;
         $language->run('[', array());
     }
@@ -78,7 +82,8 @@ class LanguageTest extends \PHPUnit_Framework_TestCase {
     /**
      * @expectedException LogicException
      */
-    public function testParseError2() {
+    public function testParseError2()
+    {
         $language = new Language;
         $language->run(']', array());
     }
