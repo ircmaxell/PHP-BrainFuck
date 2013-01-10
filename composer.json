@@ -1,0 +1,13 @@
+{
+    "name": "ircmaxell/php-brain-fuck",
+    "description": "A brainfuck interpreter for PHP",
+    "authors": [
+        {
+            "name": "Anthony Ferrara",
+            "email": "me@ircmaxell.com"
+        }
+    ],
+    "require": {
+
+    }
+}
