@@ -4,10 +4,19 @@
     "authors": [
         {
             "name": "Anthony Ferrara",
-            "email": "me@ircmaxell.com"
+            "email": "me@ircmaxell.com",
+            "role": "Lead"
+        },
+        {
+            "name": "Emanuele Minotto",
+            "email": "minottoemanuele@gmail.com",
+            "role": "Contributor"
         }
     ],
     "require": {
 
+    },
+    "autoload": {
+        "psr-0": { "BrainFuck": "lib/" }
     }
 }
