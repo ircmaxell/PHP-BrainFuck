@@ -19,6 +19,8 @@ php composer.phar require ircmaxell/php-brain-fuck
 <?php
 // require_once 'vendor/autoload.php';
 
+use BrainFuck\Language;
+
 $Language = new Language;
 
 $output = $Language->run('++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.');
