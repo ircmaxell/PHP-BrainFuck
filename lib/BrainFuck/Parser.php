@@ -2,11 +2,12 @@
 
 namespace BrainFuck;
 
-class Parser {
-
+class Parser
+{
     protected $stdOps = array();
 
-    public function __construct() {
+    public function __construct()
+    {
         // Use a flyweight here
         $this->stdOps = array(
             '+' => new Op\Change(1),
@@ -18,26 +19,32 @@ class Parser {
         );
     }
 
-    public function parse($program) {
+    public function parse($program)
+    {
         $ops = $this->parseProgram($program);
+
         return new Op\Loop($ops);
     }
 
-    protected function filterNoOps(array $ops) {
+    protected function filterNoOps(array $ops)
+    {
         return array_filter($ops, function($op) { return (bool) $op; });
     }
 
-    protected function parseProgram($program) {
+    protected function parseProgram($program)
+    {
         $ops = array();
         $programPos = 0;
         while (isset($program[$programPos])) {
             $ops[] = $this->getOp($program, $programPos);
             $programPos++;
         }
+
         return $this->filterNoOps($ops);
     }
 
-    protected function getOp($program, &$pos) {
+    protected function getOp($program, &$pos)
+    {
         if (isset($this->stdOps[$program[$pos]])) {
             return $this->stdOps[$program[$pos]];
         } elseif ($program[$pos] == ']') {
@@ -49,7 +56,8 @@ class Parser {
         }
     }
 
-    protected function parseLoop($program, &$pos) {
+    protected function parseLoop($program, &$pos)
+    {
         /**
          * This regex will parse out and match [] braces.
          *
@@ -66,6 +74,7 @@ class Parser {
             throw new \LogicException('Unmatched Brace at pos ' . $pos);
         }
         $pos += strlen($matches[0][0]) - 1;
+
         return $this->parse($matches[2][0]);
     }
 

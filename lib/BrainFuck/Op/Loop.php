@@ -2,11 +2,12 @@
 
 namespace BrainFuck\Op;
 
-class Loop implements \BrainFuck\Op {
-
+class Loop implements \BrainFuck\Op
+{
     protected $ops = array();
 
-    public function __construct(array $ops) {
+    public function __construct(array $ops)
+    {
         $this->ops = $ops;
     }
 
@@ -16,16 +17,17 @@ class Loop implements \BrainFuck\Op {
      *
      * @return array The output of the op (if any)
      */
-    public function execute(\BrainFuck\Memory $memory, \BrainFuck\IO $io) {
+    public function execute(\BrainFuck\Memory $memory, \BrainFuck\IO $io)
+    {
         while ($memory->read()) {
             $this->executeProgram($memory, $io);
         }
     }
 
-    public function executeProgram(\BrainFuck\Memory $memory, \BrainFuck\IO $io) {
+    public function executeProgram(\BrainFuck\Memory $memory, \BrainFuck\IO $io)
+    {
         foreach ($this->ops as $op) {
             $op->execute($memory, $io);
         }
     }
-
 }
