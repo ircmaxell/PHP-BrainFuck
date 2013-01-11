@@ -2,11 +2,16 @@
 
 namespace BrainFuck\Op;
 
-class Change implements \BrainFuck\Op {
+use BrainFuck\Op as Template;
+use BrainFuck\Memory;
+use BrainFuck\IO;
 
+class Change implements Template
+{
     protected $amount = 0;
-    
-    public function __construct($amount = 0) {
+
+    public function __construct($amount = 0)
+    {
         $this->amount = $amount;
     }
 
@@ -16,8 +21,8 @@ class Change implements \BrainFuck\Op {
      *
      * @return array The output of the op (if any)
      */
-    public function execute(\BrainFuck\Memory $memory, \BrainFuck\IO $io) {
+    public function execute(Memory $memory, IO $io)
+    {
         $memory->write($memory->read() + $this->amount);
     }
-
 }
